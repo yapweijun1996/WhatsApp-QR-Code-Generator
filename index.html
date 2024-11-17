@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp QR Code Generator</title>
+    <script src="qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            text-align: center;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #34b7f1;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #2a9fd6;
+        }
+
+        #qr-code, #qr-link {
+            display: flex;
+            justify-content: center;
+        }
+
+        #qr-code img {
+            margin-top: 20px;
+            width: 100%;
+            height: auto;
+            max-width: 200px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WhatsApp QR Code Generator</h1>
+        <form id="qr-form">
+            <label for="phone-number">Phone Number (with country code):</label>
+            <input type="tel" id="phone-number" placeholder="Enter phone number including country code" required>
+            <button type="submit">Generate QR Code</button>
+        </form>
+        <div id="qr-code">
+            <!-- QR Code will be generated here -->
+        </div>
+        <div id="qr-link">
+        </div>
+    </div>
+    <script>
+        document.getElementById('qr-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const phone = document.getElementById('phone-number').value;
+            const whatsappUrl = `https://api.whatsapp.com/send/?phone=${phone}`;
+            
+            const qrCodeContainer = document.getElementById('qr-code');
+            const qrCodeContainerLink = document.getElementById('qr-link');
+            qrCodeContainer.innerHTML = ''; // Clear previous QR Code
+            qrCodeContainerLink.innerHTML = `<a href='`+whatsappUrl+`' target='_blank'>`+whatsappUrl+`</a>`; // Clear previous QR Code
+
+            // Create QR Code
+            new QRCode(qrCodeContainer, {
+                text: whatsappUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        });
+    </script>
+</body>
+</html>
